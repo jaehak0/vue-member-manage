@@ -5,9 +5,9 @@ import Footer from '@/components/common/Footer.vue'
 </script>
 
 <template>
-  <div class="container mx-auto w-[1280px] flex flex-col min-h-screen">
+  <div class="container mx-auto max-w-[1280px] flex flex-col min-h-screen">
     <Header />
-    <main class="">
+    <main>
       <!-- 2025년 방식: 향상된 라우터 뷰 -->
       <RouterView v-slot="{ Component, route }">
         <Transition :name="route.meta?.transition || 'fade'" mode="out-in">

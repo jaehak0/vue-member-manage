@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineOptions({
-  name: 'MemberList',
+  name: 'MemberPagination',
 })
 </script>
 

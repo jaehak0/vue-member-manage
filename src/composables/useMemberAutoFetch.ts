@@ -1,4 +1,5 @@
-import { watch, onMounted, nextTick } from 'vue'
+// composables/useMemberAutoFetch.ts
+import { ref, watch, onMounted } from 'vue'
 import { useMemberStore } from '@/stores/memberStore'
 import { useMemberService } from '@/service/memberService'
 
@@ -6,13 +7,14 @@ export const useMemberAutoFetch = () => {
   const memberStore = useMemberStore()
   const memberService = useMemberService()
 
-  let isInitialized = false
+  // ref로 반응형 상태 만들기
+  const isInitialized = ref(false)
 
   // 초기 데이터 로드
   onMounted(async () => {
     await memberService.initialize()
-    await nextTick()
-    isInitialized = true
+    // nextTick 제거하고 바로 true로 설정
+    isInitialized.value = true
   })
 
   // 검색 조건 변화 시 자동 호출
@@ -24,7 +26,7 @@ export const useMemberAutoFetch = () => {
     }),
     async (newSearchParams, oldSearchParams) => {
       // 초기화 완료 후에만 API 호출
-      if (!isInitialized) return
+      if (!isInitialized.value) return
 
       // 실제로 값이 변경된 경우에만 호출
       const hasChanged = JSON.stringify(newSearchParams) !== JSON.stringify(oldSearchParams)
@@ -41,7 +43,7 @@ export const useMemberAutoFetch = () => {
   watch(
     () => memberStore.pagination.currentPage,
     async (newPage, oldPage) => {
-      if (!isInitialized) return
+      if (!isInitialized.value) return
 
       if (newPage !== oldPage) {
         await memberService.fetchMemberList()
@@ -50,6 +52,6 @@ export const useMemberAutoFetch = () => {
   )
 
   return {
-    isInitialized,
+    isInitialized, // ref 자체를 반환 (함수 아님)
   }
 }
