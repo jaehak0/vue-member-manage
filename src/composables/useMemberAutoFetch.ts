@@ -13,26 +13,24 @@ export const useMemberAutoFetch = () => {
   // 초기 데이터 로드
   onMounted(async () => {
     await memberService.initialize()
-    // nextTick 제거하고 바로 true로 설정
     isInitialized.value = true
   })
 
-  // 검색 조건 변화 시 자동 호출
+  // 검색 폼 변화 시 자동 호출
   watch(
     () => ({
-      nick: memberStore.searchParams.nick,
-      phone: memberStore.searchParams.phone,
-      email: memberStore.searchParams.email,
+      searchType: memberStore.searchForm.searchType,
+      searchValue: memberStore.searchForm.searchValue,
+      isActive: memberStore.searchForm.isActive,
     }),
-    async (newSearchParams, oldSearchParams) => {
+    async (newSearchForm, oldSearchForm) => {
       // 초기화 완료 후에만 API 호출
       if (!isInitialized.value) return
 
       // 실제로 값이 변경된 경우에만 호출
-      const hasChanged = JSON.stringify(newSearchParams) !== JSON.stringify(oldSearchParams)
-      if (hasChanged) {
-        // 페이지를 1로 리셋하고 검색
-        memberStore.setCurrentPage(1)
+      const hasChanged = JSON.stringify(newSearchForm) !== JSON.stringify(oldSearchForm)
+      if (hasChanged && newSearchForm.isActive) {
+        // 검색이 활성화된 경우에만 API 호출
         await memberService.fetchMemberList()
       }
     },
@@ -52,6 +50,6 @@ export const useMemberAutoFetch = () => {
   )
 
   return {
-    isInitialized, // ref 자체를 반환 (함수 아님)
+    isInitialized, // ref 자체를 반환
   }
 }

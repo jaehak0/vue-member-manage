@@ -1,5 +1,5 @@
-// src/util/memberUtils.ts
-import type { ValidationField } from '@/types/memberTypes'
+// src/utils/memberUtils.ts
+import type { ValidationField } from '@/types/types.ts'
 
 // ============= 포맷팅 함수 =============
 
@@ -76,6 +76,40 @@ export const validateAge = (age: number): boolean => {
 }
 
 /**
+ * 나이 그룹 반환
+ */
+export const getAgeGroup = (age: number): string => {
+  if (age < 20) return '10대'
+  if (age < 30) return '20대'
+  if (age < 40) return '30대'
+  if (age < 50) return '40대'
+  if (age < 60) return '50대'
+  return '60대 이상'
+}
+
+/**
+ * 페이지 번호 배열 생성
+ */
+export const generatePageNumbers = (currentPage: number, totalPages: number): number[] => {
+  const pages: number[] = []
+  const maxVisible = 5
+
+  let start = Math.max(1, currentPage - Math.floor(maxVisible / 2))
+  let end = Math.min(totalPages, start + maxVisible - 1)
+
+  // 끝에서 시작점 조정
+  if (end - start + 1 < maxVisible) {
+    start = Math.max(1, end - maxVisible + 1)
+  }
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+
+  return pages
+}
+
+/**
  * 전체 폼 유효성 검사
  */
 export const validateMemberForm = (data: {
@@ -146,9 +180,7 @@ export const getValidationMessage = (
  * 검색어 하이라이트 HTML 생성
  */
 export const highlightSearchTerm = (text: string, searchTerm: string): string => {
-  if (!searchTerm.trim()) {
-    return text
-  }
+  if (!searchTerm.trim()) return text
 
   const regex = new RegExp(`(${searchTerm})`, 'gi')
   return text.replace(regex, '<mark>$1</mark>')
@@ -162,12 +194,8 @@ export const sortMembers = <T>(data: T[], field: keyof T, direction: 'asc' | 'de
     const aValue = a[field]
     const bValue = b[field]
 
-    if (aValue < bValue) {
-      return direction === 'asc' ? -1 : 1
-    }
-    if (aValue > bValue) {
-      return direction === 'asc' ? 1 : -1
-    }
+    if (aValue < bValue) return direction === 'asc' ? -1 : 1
+    if (aValue > bValue) return direction === 'asc' ? 1 : -1
     return 0
   })
 }
