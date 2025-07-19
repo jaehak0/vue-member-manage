@@ -2,8 +2,10 @@
 import MemberDetail from '@/components/member/MemberDetail.vue'
 import MemberList from '@/components/member/MemberList.vue'
 import MemberSearchForm from '@/components/member/MemberSearchForm.vue'
-import { useMemberAutoFetch } from '@/composables/useMemberAutoFetch'
 import MemberPagination from '@/components/member/MemberPagination.vue'
+import MemberPopup from '@/components/member/MemberPopup.vue'
+import MemberDeletePopup from '@/components/member/MemberDeletePopup.vue'
+import { useMemberAutoFetch } from '@/composables/useMemberAutoFetch'
 
 const { isInitialized } = useMemberAutoFetch()
 
@@ -20,6 +22,10 @@ defineOptions({
       <MemberPagination />
     </div>
     <MemberDetail />
+
+    <!-- 모달들 -->
+    <MemberPopup />
+    <MemberDeletePopup />
   </div>
 </template>
 

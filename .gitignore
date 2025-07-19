@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 /.vscode
 .env.development
-/src/test
+#/src/test

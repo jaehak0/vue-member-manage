@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>회원관리 시스템</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		
+		body {
+			font-family: 'Malgun Gothic', sans-serif;
+			background-color: #ffffff;
+			color: #333;
+		}
+		
+		.container {
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 0;
+		}
+		
+		.main-wrapper {
+			background: white;
+			border-radius: 8px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+			overflow: hidden;
+			min-height: calc(100vh - 40px); /* 화면 높이에 맞춤 */
+			display: flex;
+			flex-direction: column;
+		}
+		
+		.content-area {
+			display: grid;
+			grid-template-columns: 1fr 300px;
+			gap: 0;
+			flex: 1; /* 남은 공간 모두 차지 */
+		}
+		
+		.main-content {
+			border-right: 1px solid #e2e8f0;
+			display: flex;
+			flex-direction: column;
+		}
+		
+		.table-container {
+			overflow-x: auto;
+			padding: 20px;
+			//flex: 1; /* 남은 공간을 테이블이 차지 */
+		}
+		
+		.footer {
+			margin-top: auto; /* 푸터를 하단으로 밀어냄 */
+			text-align: center;
+			padding: 20px;
+			color: #718096;
+			font-size: 12px;
+			background: #f8f9fa;
+			border-top: 1px solid #e2e8f0;
+		}
+		
+		.header {
+			background: #4a5568;
+			color: white;
+			padding: 15px 20px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		
+		.logo {
+			padding: 8px 16px;
+			background: #2d3748;
+			border-radius: 4px;
+			font-weight: bold;
+			color: white;
+		}
+		
+		.title {
+			font-size: 18px;
+			font-weight: 500;
+		}
+		
+		.search-section {
+			padding: 20px;
+			background: #f8f9fa;
+			border-bottom: 1px solid #e2e8f0;
+		}
+		
+		.search-form {
+			display: flex;
+			gap: 10px;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+		
+		.search-input {
+			flex: 1;
+			min-width: 250px;
+			padding: 8px 12px;
+			border: 1px solid #cbd5e0;
+			border-radius: 4px;
+			font-size: 14px;
+		}
+		
+		.search-input:focus {
+			outline: none;
+			border-color: #3182ce;
+			box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+		}
+		
+		.btn {
+			padding: 8px 16px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 14px;
+			transition: background-color 0.2s;
+		}
+		
+		.btn-primary {
+			background: #3182ce;
+			color: white;
+		}
+		
+		.btn-primary:hover {
+			background: #2c5aa0;
+		}
+		
+		.btn-success {
+			background: #38a169;
+			color: white;
+		}
+		
+		.btn-success:hover {
+			background: #2f855a;
+		}
+		
+		.table-container {
+			overflow-x: auto;
+		}
+		
+		.member-table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 14px;
+			border: 1px solid #e2e8f0;
+			border-radius: 16px;
+		}
+		
+		.member-table th,
+		.member-table td {
+			padding: 12px;
+			text-align: left;
+			border-bottom: 1px solid #e2e8f0;
+		}
+		
+		.member-table th {
+			background: #f7fafc;
+			font-weight: 600;
+			color: #4a5568;
+		}
+		
+		.member-table tr:hover {
+			background: #f7fafc;
+		}
+		
+		.member-table tbody tr {
+			cursor: pointer;
+		}
+		
+		.member-table tr.selected {
+			background: #e6fffa;
+		}
+		
+		.pagination {
+			padding: 20px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 10px;
+		}
+		
+		.page-btn {
+			width: 32px;
+			height: 32px;
+			border: 1px solid #cbd5e0;
+			background: white;
+			color: #4a5568;
+			border-radius: 4px;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.2s;
+		}
+		
+		.page-btn:hover:not(:disabled) {
+			background: #edf2f7;
+		}
+		
+		.page-btn:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+		
+		.page-btn.active {
+			background: #3182ce;
+			color: white;
+			border-color: #3182ce;
+		}
+		
+		.footer {
+			text-align: center;
+			padding: 15px 20px;
+			color: #718096;
+			font-size: 12px;
+			background: #f8f9fa;
+			border-top: 1px solid #e2e8f0;
+			margin-top: auto;
+		}
+		
+		.sidebar {
+			background: #f8f9fa;
+			height: fit-content;
+		}
+		
+		.detail-header {
+			background: #f8f9fa;
+			color: #2d3748;
+			padding: 15px 20px;
+			font-size: 16px;
+			font-weight: 600;
+			border-bottom: 2px solid #e2e8f0;
+			position: relative;
+		}
+		
+		.detail-header::before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			width: 4px;
+			background: #3182ce;
+		}
+		
+		.detail-content {
+			padding: 20px;
+		}
+		
+		.detail-item {
+			display: flex;
+			margin-bottom: 15px;
+			align-items: center;
+		}
+		
+		.detail-label {
+			font-weight: 600;
+			color: #4a5568;
+			width: 80px;
+			margin-right: 10px;
+		}
+		
+		.detail-value {
+			color: #2d3748;
+			flex: 1;
+		}
+		
+		.detail-actions {
+			display: flex;
+			gap: 10px;
+			margin-top: 20px;
+			padding-top: 20px;
+			border-top: 1px solid #e2e8f0;
+		}
+		
+		.btn-edit {
+			background: #3182ce;
+			color: white;
+			flex: 1;
+		}
+		
+		.btn-edit:hover {
+			background: #2c5aa0;
+		}
+		
+		.btn-delete {
+			background: #e53e3e;
+			color: white;
+			flex: 1;
+		}
+		
+		.btn-delete:hover {
+			background: #c53030;
+		}
+		
+		/* 모바일 전용 폼 페이지 */
+		.mobile-form-page {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: white;
+			z-index: 2000;
+			overflow-y: auto;
+		}
+		
+		.mobile-form-page.show {
+			display: block;
+		}
+		
+		.mobile-form-header {
+			background: #4a5568;
+			color: white;
+			padding: 15px 20px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			position: sticky;
+			top: 0;
+			z-index: 100;
+		}
+		
+		.mobile-form-title {
+			font-size: 16px;
+			font-weight: 600;
+		}
+		
+		.mobile-form-close {
+			background: none;
+			border: none;
+			color: white;
+			font-size: 18px;
+			cursor: pointer;
+			padding: 5px;
+		}
+		
+		.mobile-form-content {
+			padding: 20px;
+		}
+		
+		/* 모바일 전용 액션 바 스타일 개선 */
+		.mobile-action-bar {
+			display: none;
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: white;
+			border-top: 2px solid #e2e8f0;
+			box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+			padding: 15px 20px;
+			z-index: 200;
+		}
+		
+		.mobile-action-content {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			max-width: 600px;
+			margin: 0 auto;
+		}
+		
+		.mobile-selected-member {
+			font-weight: 600;
+			color: #2d3748;
+			font-size: 15px;
+			flex: 1;
+		}
+		
+		.mobile-action-buttons {
+			display: flex;
+			gap: 10px;
+		}
+		
+		.mobile-action-buttons .btn {
+			font-size: 13px;
+			padding: 8px 16px;
+			min-width: 60px;
+			border-radius: 6px;
+			font-weight: 500;
+		}
+		
+		/* 모달 스타일 */
+		.modal {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.5);
+			display: none;
+			align-items: center;
+			justify-content: center;
+			z-index: 1000;
+			opacity: 0;
+			transition: opacity 0.3s ease;
+		}
+		
+		.modal.show {
+			display: flex;
+			opacity: 1;
+		}
+		
+		.modal-content {
+			background: white;
+			border-radius: 8px;
+			width: 90%;
+			max-width: 400px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+			transform: scale(0.7);
+			transition: transform 0.3s ease;
+			max-height: 90vh;
+			overflow-y: auto;
+		}
+		
+		.modal.show .modal-content {
+			transform: scale(1);
+		}
+		
+		/* 모바일에서 모달이 열렸을 때 */
+		@media (max-width: 768px) {
+			.modal.show {
+				background: rgba(0, 0, 0, 0.8);
+			}
+			
+			.modal.show .modal-content {
+				width: 95%;
+				max-width: none;
+				margin: 10px;
+				border-radius: 12px;
+			}
+		}
+		
+		/* 480px 이하에서 모달이 전체 화면을 덮도록 */
+		@media (max-width: 480px) {
+			.modal.show {
+				background: rgba(0, 0, 0, 0.95);
+				padding: 0;
+			}
+			
+			.modal.show .modal-content {
+				width: 100%;
+				height: 100%;
+				max-width: none;
+				max-height: none;
+				margin: 0;
+				border-radius: 0;
+				display: flex;
+				flex-direction: column;
+			}
+			
+			.modal-body {
+				flex: 1;
+				overflow-y: auto;
+			}
+		}
+		
+		.modal-header {
+			background: #4a5568;
+			color: white;
+			padding: 15px 20px;
+			border-radius: 8px 8px 0 0;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		
+		.modal-title {
+			font-size: 16px;
+			font-weight: 600;
+		}
+		
+		.close-btn {
+			background: none;
+			border: none;
+			color: white;
+			font-size: 20px;
+			cursor: pointer;
+			width: 24px;
+			height: 24px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		
+		.modal-body {
+			padding: 20px;
+		}
+		
+		.form-group {
+			margin-bottom: 15px;
+		}
+		
+		.form-label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: 600;
+			color: #4a5568;
+		}
+		
+		.required {
+			color: #e53e3e;
+		}
+		
+		.form-input {
+			width: 100%;
+			padding: 8px 12px;
+			border: 1px solid #cbd5e0;
+			border-radius: 4px;
+			font-size: 14px;
+		}
+		
+		.form-input:focus {
+			outline: none;
+			border-color: #3182ce;
+			box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+		}
+		
+		.radio-group {
+			display: flex;
+			gap: 15px;
+			margin-top: 5px;
+		}
+		
+		.radio-item {
+			display: flex;
+			align-items: center;
+			gap: 5px;
+		}
+		
+		.radio-item input[type="radio"] {
+			margin: 0;
+		}
+		
+		.radio-item label {
+			margin: 0;
+			font-size: 14px;
+			cursor: pointer;
+		}
+		
+		.form-actions {
+			display: flex;
+			gap: 10px;
+			margin-top: 20px;
+		}
+		
+		.form-actions .btn {
+			flex: 1;
+		}
+		
+		.delete-modal-content {
+			text-align: center;
+			padding: 10px 0;
+		}
+		
+		.delete-message {
+			margin-bottom: 20px;
+			line-height: 1.6;
+		}
+		
+		.delete-warning {
+			color: #e53e3e;
+			font-size: 12px;
+			margin-top: 10px;
+		}
+		
+		.alert {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			background: #38a169;
+			color: white;
+			padding: 15px 20px;
+			border-radius: 4px;
+			z-index: 2000;
+			opacity: 0;
+			transform: translateY(-20px);
+			transition: all 0.3s ease;
+		}
+		
+		.alert.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		
+		/* 반응형 디자인 */
+		@media (max-width: 768px) {
+			.container {
+				padding: 10px;
+			}
+			
+			.content-area {
+				grid-template-columns: 1fr;
+			}
+			
+			.main-content {
+				border-right: none;
+				border-bottom: 1px solid #e2e8f0;
+			}
+			
+			.search-form {
+				flex-direction: column;
+				align-items: stretch;
+			}
+			
+			.search-input {
+				min-width: auto;
+			}
+			
+			/* 모바일에서 번호, 이메일, 성별 컬럼 숨김 - 이름과 전화번호만 표시 */
+			.member-table th:nth-child(1),
+			.member-table td:nth-child(1),
+			.member-table th:nth-child(3),
+			.member-table td:nth-child(3),
+			.member-table th:nth-child(5),
+			.member-table td:nth-child(5) {
+				display: none;
+			}
+			
+			.member-table {
+				font-size: 12px;
+			}
+			
+			.member-table th,
+			.member-table td {
+				padding: 8px;
+			}
+			
+			/* 사이드바 숨김, 모바일 액션바 표시 */
+			.sidebar {
+				display: none;
+			}
+			
+			.mobile-action-bar {
+				display: block;
+			}
+			
+			/* 컨테이너 하단 여백 확보 */
+			.container {
+				padding-bottom: 80px;
+			}
+			
+			/* 모바일에서는 모달 대신 전체 화면 폼 사용 */
+			.modal {
+				display: none !important;
+			}
+		}
+		
+		/* 480px 이하에서도 테이블 유지하되 더 컴팩트하게 */
+		@media (max-width: 480px) {
+			.container {
+				padding: 5px 5px 80px 5px; /* 하단 액션바 공간 확보 */
+			}
+			
+			.search-section {
+				padding: 12px 15px;
+			}
+			
+			.member-table {
+				font-size: 11px;
+			}
+			
+			.member-table th,
+			.member-table td {
+				padding: 6px;
+			}
+			
+			.pagination {
+				padding: 12px;
+			}
+			
+			.page-btn {
+				width: 28px;
+				height: 28px;
+				font-size: 12px;
+			}
+			
+			.modal-content {
+				width: 95%;
+				margin: 10px;
+				max-height: 90vh;
+				overflow-y: auto;
+			}
+			
+			.mobile-action-bar {
+				padding: 10px 12px;
+			}
+			
+			.mobile-selected-member {
+				font-size: 13px;
+			}
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<!-- 전체 래퍼 -->
+	<div class="main-wrapper">
+		<!-- 헤더 (전체 폭) -->
+		<div class="header">
+			<div class="logo">로고</div>
+			<div class="title">OOO 회원관리 (총 : 00명)</div>
+		</div>
+		
+		<!-- 컨텐츠 영역 (좌우 분할) -->
+		<div class="content-area">
+			<!-- 메인 컨텐츠 (좌측) -->
+			<div class="main-content">
+				<!-- 검색 섹션 -->
+				<div class="search-section">
+					<div class="search-form">
+						<input type="text" class="search-input" placeholder="이름, 이메일, 전화번호로 검색...">
+						<button class="btn btn-primary" onclick="searchMembers()">검색</button>
+						<button class="btn btn-success" onclick="showAddModal()">회원 추가</button>
+					</div>
+				</div>
+				
+				<!-- 테이블 -->
+				<div class="table-container">
+					<table class="member-table">
+						<thead>
+						<tr>
+							<th>번호</th>
+							<th>이름</th>
+							<th>이메일</th>
+							<th>전화번호</th>
+							<th>성별</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr class="selected"
+						    onclick="selectMember(1, '김새음', 'saeum@susoft.com', '010-0000-0000', 25, '남성')">
+							<td>1</td>
+							<td>김새음</td>
+							<td>saeum@susoft.com</td>
+							<td>010-0000-0000</td>
+							<td>남자</td>
+						</tr>
+						<tr onclick="selectMember(2, '이새음', 'saeum@susoft.com', '010-0000-0000', 30, '남성')">
+							<td>2</td>
+							<td>이새음</td>
+							<td>saeum@susoft.com</td>
+							<td>010-0000-0000</td>
+							<td>남자</td>
+						</tr>
+						<tr onclick="selectMember(3, '박새음', 'saeum@susoft.com', '010-0000-0000', 28, '남성')">
+							<td>3</td>
+							<td>박새음</td>
+							<td>saeum@susoft.com</td>
+							<td>010-0000-0000</td>
+							<td>남자</td>
+						</tr>
+						<tr onclick="selectMember(4, '최새음', 'saeum@susoft.com', '010-0000-0000', 35, '남성')">
+							<td>4</td>
+							<td>최새음</td>
+							<td>saeum@susoft.com</td>
+							<td>010-0000-0000</td>
+							<td>남자</td>
+						</tr>
+						<tr onclick="selectMember(5, '정새음', 'saeum@susoft.com', '010-0000-0000', 27, '남성')">
+							<td>5</td>
+							<td>정새음</td>
+							<td>saeum@susoft.com</td>
+							<td>010-0000-0000</td>
+							<td>남자</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<!-- 페이지네이션 -->
+				<div class="pagination">
+					<button class="page-btn" onclick="changePage('prev')">‹</button>
+					<button class="page-btn active" onclick="changePage(1)">1</button>
+					<button class="page-btn" onclick="changePage(2)">2</button>
+					<button class="page-btn" onclick="changePage(3)">3</button>
+					<button class="page-btn" onclick="changePage(4)">4</button>
+					<button class="page-btn" onclick="changePage(5)">5</button>
+					<button class="page-btn" onclick="changePage('next')">›</button>
+				</div>
+			</div>
+			
+			<!-- 사이드바 (우측) - 데스크톱에서만 표시 -->
+			<div class="sidebar">
+				<div class="detail-header" id="detailTitle">김새음님 상세정보</div>
+				<div class="detail-content">
+					<div class="detail-item">
+						<span class="detail-label">이름 :</span>
+						<span class="detail-value" id="detailName">김새음</span>
+					</div>
+					<div class="detail-item">
+						<span class="detail-label">이메일 :</span>
+						<span class="detail-value" id="detailEmail">saeum@susoft.com</span>
+					</div>
+					<div class="detail-item">
+						<span class="detail-label">전화번호 :</span>
+						<span class="detail-value" id="detailPhone">010-0000-0000</span>
+					</div>
+					<div class="detail-item">
+						<span class="detail-label">나이 :</span>
+						<span class="detail-value" id="detailAge">25</span>
+					</div>
+					<div class="detail-item">
+						<span class="detail-label">성별 :</span>
+						<span class="detail-value" id="detailGender">남성</span>
+					</div>
+					<div class="detail-actions">
+						<button class="btn btn-edit" onclick="showEditModal()">수정</button>
+						<button class="btn btn-delete" onclick="showDeleteModal()">삭제</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- 푸터 (전체 폭) -->
+		<div class="footer">
+			Footer
+		</div>
+	</div>
+</div>
+
+<!-- 모바일 전용 폼 페이지 -->
+<div class="mobile-form-page" id="mobileFormPage">
+	<div class="mobile-form-header">
+		<div class="mobile-form-title" id="mobileFormTitle">새 회원 등록</div>
+		<button class="mobile-form-close" onclick="hideMobileForm()">&times;</button>
+	</div>
+	<div class="mobile-form-content">
+		<div class="form-group">
+			<label class="form-label">이름 <span class="required">*</span></label>
+			<input type="text" id="mobileModalName" class="form-input" placeholder="김민수">
+		</div>
+		<div class="form-group">
+			<label class="form-label">이메일 <span class="required">*</span></label>
+			<input type="email" id="mobileModalEmail" class="form-input"
+			       placeholder="saeum@saeumsoft.co.kr">
+		</div>
+		<div class="form-group">
+			<label class="form-label">전화번호 <span class="required">*</span></label>
+			<input type="tel" id="mobileModalPhone" class="form-input" placeholder="010-0000-0000">
+		</div>
+		<div class="form-group">
+			<label class="form-label">나이 <span class="required">*</span></label>
+			<input type="number" id="mobileModalAge" class="form-input" placeholder="25">
+		</div>
+		<div class="form-group">
+			<label class="form-label">성별 <span class="required">*</span></label>
+			<div class="radio-group">
+				<div class="radio-item">
+					<input type="radio" id="mobileGenderMale" name="mobileGender" value="남성">
+					<label for="mobileGenderMale">남성</label>
+				</div>
+				<div class="radio-item">
+					<input type="radio" id="mobileGenderFemale" name="mobileGender" value="여성">
+					<label for="mobileGenderFemale">여성</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-actions">
+			<button class="btn btn-success" id="mobileSaveBtn" onclick="saveMemberMobile()">등록</button>
+			<button class="btn" onclick="hideMobileForm()">취소</button>
+		</div>
+	</div>
+</div>
+
+<!-- 모바일 전용 액션바 (768px 이하에서만 표시) - 하단 고정 -->
+<div class="mobile-action-bar">
+	<div class="mobile-action-content">
+		<span class="mobile-selected-member" id="mobileSelectedMember">김새음님 선택됨</span>
+		<div class="mobile-action-buttons">
+			<button class="btn btn-edit" onclick="showEditModal()">수정</button>
+			<button class="btn btn-delete" onclick="showDeleteModal()">삭제</button>
+		</div>
+	</div>
+</div>
+
+<!-- 회원 추가/수정 모달 -->
+<div id="memberModal" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<div class="modal-title" id="modalTitle">새 회원 등록</div>
+			<button class="close-btn" onclick="hideMemberModal()">&times;</button>
+		</div>
+		<div class="modal-body">
+			<div class="form-group">
+				<label class="form-label">이름 <span class="required">*</span></label>
+				<input type="text" id="modalName" class="form-input" placeholder="김민수">
+			</div>
+			<div class="form-group">
+				<label class="form-label">이메일 <span class="required">*</span></label>
+				<input type="email" id="modalEmail" class="form-input" placeholder="saeum@saeumsoft.co.kr">
+			</div>
+			<div class="form-group">
+				<label class="form-label">전화번호 <span class="required">*</span></label>
+				<input type="tel" id="modalPhone" class="form-input" placeholder="010-0000-0000">
+			</div>
+			<div class="form-group">
+				<label class="form-label">나이 <span class="required">*</span></label>
+				<input type="number" id="modalAge" class="form-input" placeholder="25">
+			</div>
+			<div class="form-group">
+				<label class="form-label">성별 <span class="required">*</span></label>
+				<div class="radio-group">
+					<div class="radio-item">
+						<input type="radio" id="genderMale" name="gender" value="남성">
+						<label for="genderMale">남성</label>
+					</div>
+					<div class="radio-item">
+						<input type="radio" id="genderFemale" name="gender" value="여성">
+						<label for="genderFemale">여성</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-actions">
+				<button class="btn btn-success" id="saveBtn" onclick="saveMember()">등록</button>
+				<button class="btn" onclick="hideMemberModal()">취소</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 삭제 확인 모달 -->
+<div id="deleteModal" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<div class="modal-title">삭제 확인</div>
+			<button class="close-btn" onclick="hideDeleteModal()">&times;</button>
+		</div>
+		<div class="modal-body">
+			<div class="delete-modal-content">
+				<div class="delete-message">
+					<span id="deleteTargetName">OOO</span> 님을<br>
+					회원에서 삭제하시겠습니까?
+					<div class="delete-warning">* 삭제 시 복구할 수 없습니다.</div>
+				</div>
+				<div class="form-actions">
+					<button class="btn btn-delete" onclick="deleteMember()">삭제</button>
+					<button class="btn" onclick="hideDeleteModal()">취소</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 알림 메시지 -->
+<div id="alert" class="alert"></div>
+
+<script>
+	// 전역 변수
+	let currentMember = null;
+	let isEditMode = false;
+	
+	// 회원 선택
+	function selectMember(id, name, email, phone, age, gender) {
+		currentMember = {id, name, email, phone, age, gender};
+		
+		// 테이블 행 선택 표시
+		document.querySelectorAll('.member-table tbody tr').forEach(tr => {
+			tr.classList.remove('selected');
+		});
+		
+		// 클릭된 행에만 selected 클래스 추가
+		if (event && event.currentTarget) {
+			event.currentTarget.classList.add('selected');
+		}
+		
+		// 데스크톱 사이드바 업데이트
+		const detailTitle = document.getElementById('detailTitle');
+		const detailName = document.getElementById('detailName');
+		const detailEmail = document.getElementById('detailEmail');
+		const detailPhone = document.getElementById('detailPhone');
+		const detailAge = document.getElementById('detailAge');
+		const detailGender = document.getElementById('detailGender');
+		
+		if (detailTitle) {
+			detailTitle.textContent = `${name}님 상세정보`;
+		}
+		if (detailName) {
+			detailName.textContent = name;
+		}
+		if (detailEmail) {
+			detailEmail.textContent = email;
+		}
+		if (detailPhone) {
+			detailPhone.textContent = phone;
+		}
+		if (detailAge) {
+			detailAge.textContent = age;
+		}
+		if (detailGender) {
+			detailGender.textContent = gender;
+		}
+		
+		// 모바일 액션바 업데이트 (이름과 버튼만)
+		const mobileSelectedMember = document.getElementById('mobileSelectedMember');
+		if (mobileSelectedMember) {
+			mobileSelectedMember.textContent = `${name}님 선택됨`;
+		}
+	}
+	
+	// 모바일 여부 확인
+	function isMobile() {
+		return window.innerWidth <= 768;
+	}
+	
+	// 회원 추가 모달 표시
+	function showAddModal() {
+		if (isMobile()) {
+			showMobileForm('add');
+		} else {
+			isEditMode = false;
+			const modal = document.getElementById('memberModal');
+			document.getElementById('modalTitle').textContent = '새 회원 등록';
+			document.getElementById('saveBtn').textContent = '등록';
+			
+			// 폼 초기화
+			document.getElementById('modalName').value = '';
+			document.getElementById('modalEmail').value = '';
+			document.getElementById('modalPhone').value = '';
+			document.getElementById('modalAge').value = '';
+			document.querySelectorAll('input[name="gender"]').forEach(radio => radio.checked = false);
+			
+			showModal(modal);
+		}
+	}
+	
+	// 회원 수정 모달 표시
+	function showEditModal() {
+		if (!currentMember) {
+			showAlert('수정할 회원을 선택해주세요.');
+			return;
+		}
+		
+		if (isMobile()) {
+			showMobileForm('edit');
+		} else {
+			isEditMode = true;
+			const modal = document.getElementById('memberModal');
+			document.getElementById('modalTitle').textContent = `${currentMember.name}님 상세정보 수정`;
+			document.getElementById('saveBtn').textContent = '수정';
+			
+			// 현재 회원 정보로 폼 채우기
+			document.getElementById('modalName').value = currentMember.name;
+			document.getElementById('modalEmail').value = currentMember.email;
+			document.getElementById('modalPhone').value = currentMember.phone;
+			document.getElementById('modalAge').value = currentMember.age;
+			document.querySelector(`input[name="gender"][value="${currentMember.gender}"]`).checked = true;
+			
+			showModal(modal);
+		}
+	}
+	
+	// 모바일 폼 표시
+	function showMobileForm(mode) {
+		const mobileForm = document.getElementById('mobileFormPage');
+		const title = document.getElementById('mobileFormTitle');
+		const saveBtn = document.getElementById('mobileSaveBtn');
+		
+		if (!mobileForm || !title || !saveBtn) {
+			console.error('모바일 폼 요소를 찾을 수 없습니다.');
+			return;
+		}
+		
+		isEditMode = mode === 'edit';
+		
+		if (mode === 'edit' && currentMember) {
+			title.textContent = `${currentMember.name}님 상세정보 수정`;
+			saveBtn.textContent = '수정';
+			
+			// 현재 회원 정보로 폼 채우기
+			const nameInput = document.getElementById('mobileModalName');
+			const emailInput = document.getElementById('mobileModalEmail');
+			const phoneInput = document.getElementById('mobileModalPhone');
+			const ageInput = document.getElementById('mobileModalAge');
+			const genderRadio = document.querySelector(`input[name="mobileGender"][value="${currentMember.gender}"]`);
+			
+			if (nameInput) {
+				nameInput.value = currentMember.name;
+			}
+			if (emailInput) {
+				emailInput.value = currentMember.email;
+			}
+			if (phoneInput) {
+				phoneInput.value = currentMember.phone;
+			}
+			if (ageInput) {
+				ageInput.value = currentMember.age;
+			}
+			if (genderRadio) {
+				genderRadio.checked = true;
+			}
+		} else {
+			title.textContent = '새 회원 등록';
+			saveBtn.textContent = '등록';
+			
+			// 폼 초기화
+			const nameInput = document.getElementById('mobileModalName');
+			const emailInput = document.getElementById('mobileModalEmail');
+			const phoneInput = document.getElementById('mobileModalPhone');
+			const ageInput = document.getElementById('mobileModalAge');
+			
+			if (nameInput) {
+				nameInput.value = '';
+			}
+			if (emailInput) {
+				emailInput.value = '';
+			}
+			if (phoneInput) {
+				phoneInput.value = '';
+			}
+			if (ageInput) {
+				ageInput.value = '';
+			}
+			
+			document.querySelectorAll('input[name="mobileGender"]').forEach(radio => radio.checked = false);
+		}
+		
+		mobileForm.classList.add('show');
+	}
+	
+	// 모바일 폼 숨김
+	function hideMobileForm() {
+		const mobileForm = document.getElementById('mobileFormPage');
+		if (mobileForm) {
+			mobileForm.classList.remove('show');
+		}
+	}
+	
+	// 모바일 회원 저장
+	function saveMemberMobile() {
+		const name = document.getElementById('mobileModalName').value.trim();
+		const email = document.getElementById('mobileModalEmail').value.trim();
+		const phone = document.getElementById('mobileModalPhone').value.trim();
+		const age = document.getElementById('mobileModalAge').value.trim();
+		const gender = document.querySelector('input[name="mobileGender"]:checked')?.value;
+		
+		// 유효성 검사
+		if (!name || !email || !phone || !age || !gender) {
+			showAlert('모든 필수 항목을 입력해주세요.');
+			return;
+		}
+		
+		// 전화번호 포맷 체크
+		const phonePattern = /^010-\d{4}-\d{4}$/;
+		if (!phonePattern.test(phone)) {
+			showAlert('전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)');
+			return;
+		}
+		
+		// 나이 체크
+		if (age < 1 || age > 120) {
+			showAlert('올바른 나이를 입력해주세요.');
+			return;
+		}
+		
+		// 여기서 실제 API 호출
+		const action = isEditMode ? '수정' : '등록';
+		showAlert(`${action}되었습니다.`);
+		hideMobileForm();
+		
+		// 목록 새로고침 (실제로는 API 재호출)
+		setTimeout(() => {
+			// 목록 동기화 로직
+		}, 100);
+	}
+	
+	// 삭제 모달 표시
+	function showDeleteModal() {
+		if (!currentMember) {
+			showAlert('삭제할 회원을 선택해주세요.');
+			return;
+		}
+		
+		document.getElementById('deleteTargetName').textContent = currentMember.name;
+		showModal(document.getElementById('deleteModal'));
+	}
+	
+	// 모달 표시
+	function showModal(modal) {
+		modal.classList.add('show');
+	}
+	
+	// 회원 모달 숨김
+	function hideMemberModal() {
+		document.getElementById('memberModal').classList.remove('show');
+	}
+	
+	// 삭제 모달 숨김
+	function hideDeleteModal() {
+		document.getElementById('deleteModal').classList.remove('show');
+	}
+	
+	// 회원 저장
+	function saveMember() {
+		const name = document.getElementById('modalName').value.trim();
+		const email = document.getElementById('modalEmail').value.trim();
+		const phone = document.getElementById('modalPhone').value.trim();
+		const age = document.getElementById('modalAge').value.trim();
+		const gender = document.querySelector('input[name="gender"]:checked')?.value;
+		
+		// 유효성 검사
+		if (!name || !email || !phone || !age || !gender) {
+			showAlert('모든 필수 항목을 입력해주세요.');
+			return;
+		}
+		
+		// 전화번호 포맷 체크
+		const phonePattern = /^010-\d{4}-\d{4}$/;
+		if (!phonePattern.test(phone)) {
+			showAlert('전화번호 형식이 올바르지 않습니다. (예: 010-1234-5678)');
+			return;
+		}
+		
+		// 나이 체크
+		if (age < 1 || age > 120) {
+			showAlert('올바른 나이를 입력해주세요.');
+			return;
+		}
+		
+		// 여기서 실제 API 호출
+		const action = isEditMode ? '수정' : '등록';
+		showAlert(`${action}되었습니다.`);
+		hideMemberModal();
+		
+		// 목록 새로고침 (실제로는 API 재호출)
+		setTimeout(() => {
+			// 목록 동기화 로직
+		}, 100);
+	}
+	
+	// 회원 삭제
+	function deleteMember() {
+		if (currentMember) {
+			// 여기서 실제 삭제 API 호출
+			showAlert(`${currentMember.name}님이 삭제되었습니다.`);
+			hideDeleteModal();
+			currentMember = null;
+			
+			// 목록 새로고침 및 상세정보 초기화
+			setTimeout(() => {
+				// 목록 동기화 로직
+			}, 100);
+		}
+	}
+	
+	// 검색
+	function searchMembers() {
+		const searchValue = document.querySelector('.search-input').value.trim();
+		// 여기서 실제 검색 API 호출
+		console.log('검색어:', searchValue);
+	}
+	
+	// 페이지 변경
+	function changePage(page) {
+		// 여기서 실제 페이지네이션 API 호출
+		console.log('페이지 변경:', page);
+	}
+	
+	// 알림 표시
+	function showAlert(message) {
+		const alert = document.getElementById('alert');
+		alert.textContent = message;
+		alert.classList.add('show');
+		
+		setTimeout(() => {
+			alert.classList.remove('show');
+		}, 2000);
+	}
+	
+	// 이벤트 리스너 등록
+	document.addEventListener('DOMContentLoaded', function () {
+		// 모달 외부 클릭 시 닫기
+		document.querySelectorAll('.modal').forEach(modal => {
+			modal.addEventListener('click', function (e) {
+				if (e.target === modal) {
+					modal.classList.remove('show');
+				}
+			});
+		});
+		
+		// 전화번호 입력 포맷팅
+		document.getElementById('modalPhone').addEventListener('input', function (e) {
+			let value = e.target.value.replace(/[^\d]/g, '');
+			if (value.length >= 3) {
+				value = value.substring(0, 3) + '-' + value.substring(3);
+			}
+			if (value.length >= 8) {
+				value = value.substring(0, 8) + '-' + value.substring(8, 12);
+			}
+			e.target.value = value;
+		});
+		
+		// 나이 입력 숫자만 허용
+		document.getElementById('modalAge').addEventListener('input', function (e) {
+			e.target.value = e.target.value.replace(/[^\d]/g, '');
+		});
+		
+		// 모바일 전화번호 입력 포맷팅
+		document.getElementById('mobileModalPhone').addEventListener('input', function (e) {
+			let value = e.target.value.replace(/[^\d]/g, '');
+			if (value.length >= 3) {
+				value = value.substring(0, 3) + '-' + value.substring(3);
+			}
+			if (value.length >= 8) {
+				value = value.substring(0, 8) + '-' + value.substring(8, 12);
+			}
+			e.target.value = value;
+		});
+		
+		// 모바일 나이 입력 숫자만 허용
+		document.getElementById('mobileModalAge').addEventListener('input', function (e) {
+			e.target.value = e.target.value.replace(/[^\d]/g, '');
+		});
+		
+		// 첫 번째 회원 자동 선택
+		selectMember(1, '김새음', 'saeum@susoft.com', '010-0000-0000', 25, '남성');
+	});
+</script>
+</body>
+</html>

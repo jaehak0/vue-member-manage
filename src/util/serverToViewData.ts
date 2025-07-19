@@ -30,18 +30,12 @@ export const serverToViewMember = (serverMember: ServerMember): ViewMember => {
   const viewMember = {
     id: serverMember.userKey,
     name: serverMember.nick,
-    phone: serverMember.phone,
+    phone: formatPhoneNumber(serverMember.phone), // 항상 포맷된 전화번호로 변환
     age: serverMember.age,
     email: serverMember.email,
     gender: serverMember.gender,
 
     // 계산된 필드들
-    get displayName(): string {
-      return `${this.name} (${this.age}세)`
-    },
-    get formattedPhone(): string {
-      return formatPhoneNumber(this.phone)
-    },
     get genderText(): string {
       return getGenderText(this.gender)
     },
@@ -122,7 +116,8 @@ export const serverToViewMemberList = (
 export const viewFormToServerCreate = (viewForm: ViewMemberForm): ServerCreateMemberRequest => {
   return {
     nick: viewForm.name.trim(),
-    phone: viewForm.phone.replace(/-/g, ''), // 하이픈 제거
+    email: viewForm.email.trim(),
+    phone: formatPhoneNumber(viewForm.phone), // 포맷된 전화번호로 저장
     age: parseInt(viewForm.age),
     gender: viewForm.gender as 'M' | 'F',
   }
@@ -134,7 +129,8 @@ export const viewFormToServerCreate = (viewForm: ViewMemberForm): ServerCreateMe
 export const viewFormToServerUpdate = (viewForm: ViewMemberForm): ServerUpdateMemberRequest => {
   return {
     nick: viewForm.name.trim(),
-    phone: viewForm.phone.replace(/-/g, ''), // 하이픈 제거
+    email: viewForm.email.trim(),
+    phone: formatPhoneNumber(viewForm.phone), // 포맷된 전화번호로 저장
     age: parseInt(viewForm.age),
     gender: viewForm.gender as 'M' | 'F',
   }
@@ -146,7 +142,8 @@ export const viewFormToServerUpdate = (viewForm: ViewMemberForm): ServerUpdateMe
 export const viewMemberToServerUpdate = (viewMember: ViewMember): ServerUpdateMemberRequest => {
   return {
     nick: viewMember.name,
-    phone: viewMember.phone.replace(/-/g, ''), // 하이픈 제거
+    email: viewMember.email,
+    phone: formatPhoneNumber(viewMember.phone), // 포맷된 전화번호로 저장
     age: viewMember.age,
     gender: viewMember.gender,
   }

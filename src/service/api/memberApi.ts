@@ -25,7 +25,7 @@ export const updateMember = async (
   memberData: ServerUpdateMemberRequest
 ): Promise<void> => {
   await api.put('/member/updateMember', {
-    userKey,
+    user_key: userKey,
     ...memberData,
   })
 }

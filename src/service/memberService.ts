@@ -107,7 +107,7 @@ export const useMemberService = () => {
       memberStore.setCurrentMember(viewMember)
       stateLog('memberStore', 'setCurrentMember', oldMember, viewMember)
 
-      info('✅ 회원 상세 조회 성공', `${viewMember.displayName}`)
+      info('✅ 회원 상세 조회 성공', `${viewMember.name}`)
     } catch (err) {
       error('❌ 회원 상세 조회 실패:', err)
       toastStore.showToast('회원 정보 조회에 실패했습니다.', 'error')
@@ -187,7 +187,7 @@ export const useMemberService = () => {
       stateLog(
         'memberStore',
         'updateMemberInList',
-        oldMember ? `${oldMember.displayName}` : 'Unknown',
+        oldMember ? `${oldMember.name}` : 'Unknown',
         `${updatedViewMember.name} (수정됨)`
       )
 
@@ -209,7 +209,7 @@ export const useMemberService = () => {
     try {
       // 삭제할 회원 정보 백업 (로깅용)
       const targetMember = memberStore.members.find(m => m.id === id)
-      log('삭제 대상 회원:', targetMember ? `${targetMember.displayName}` : 'Unknown')
+      log('삭제 대상 회원:', targetMember ? `${targetMember.name}` : 'Unknown')
 
       const requestData = { user_key: id }
       apiLog('DELETE', '/member/deleteMember', requestData)
@@ -238,7 +238,7 @@ export const useMemberService = () => {
 
       info(
         '✅ 회원 삭제 성공 (실시간 UI 반영)',
-        targetMember ? `${targetMember.displayName} 삭제됨` : `id: ${id} 삭제됨`
+        targetMember ? `${targetMember.name} 삭제됨` : `id: ${id} 삭제됨`
       )
     } catch (err) {
       error('❌ 회원 삭제 실패:', err)
@@ -330,7 +330,7 @@ export const useMemberService = () => {
    */
   const openEditModal = async (id: number) => {
     const targetMember = memberStore.members.find(m => m.id === id)
-    log('✏️ 회원 수정 모달 열기', targetMember ? `${targetMember.displayName}` : `id: ${id}`)
+    log('✏️ 회원 수정 모달 열기', targetMember ? `${targetMember.name}` : `id: ${id}`)
 
     memberStore.openModal('edit', id)
     stateLog('memberStore', 'openModal', 'closed', `edit-${id}`)
@@ -345,7 +345,7 @@ export const useMemberService = () => {
    */
   const openDetailModal = async (id: number) => {
     const targetMember = memberStore.members.find(m => m.id === id)
-    log('👁️ 회원 상세보기 모달 열기', targetMember ? `${targetMember.displayName}` : `id: ${id}`)
+    log('👁️ 회원 상세보기 모달 열기', targetMember ? `${targetMember.name}` : `id: ${id}`)
 
     memberStore.openModal('detail', id)
     stateLog('memberStore', 'openModal', 'closed', `detail-${id}`)
@@ -360,7 +360,7 @@ export const useMemberService = () => {
    */
   const openDeleteModal = (id: number) => {
     const targetMember = memberStore.members.find(m => m.id === id)
-    log('🗑️ 회원 삭제 확인 모달 열기', targetMember ? `${targetMember.displayName}` : `id: ${id}`)
+    log('🗑️ 회원 삭제 확인 모달 열기', targetMember ? `${targetMember.name}` : `id: ${id}`)
 
     memberStore.openModal('delete', id)
     stateLog('memberStore', 'openModal', 'closed', `delete-${id}`)

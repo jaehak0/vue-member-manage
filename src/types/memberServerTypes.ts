@@ -19,6 +19,7 @@ export interface ServerMember {
 export interface ServerCreateMemberRequest {
   nick: string
   phone: string
+  email: string
   age: number
   gender: 'M' | 'F'
 }
@@ -29,6 +30,7 @@ export interface ServerCreateMemberRequest {
 export interface ServerUpdateMemberRequest {
   nick: string
   phone: string
+  email: string
   age: number
   gender: 'M' | 'F'
 }

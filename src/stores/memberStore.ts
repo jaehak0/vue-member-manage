@@ -1,6 +1,7 @@
 // src/stores/memberStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { generatePageNumbers } from '@/util/memberUtils'
 import type {
   ViewMember,
   ViewPagination,
@@ -65,6 +66,11 @@ export const useMemberStore = defineStore('member', () => {
   // 이전/다음 페이지 존재 여부
   const hasPreviousPage = computed(() => pagination.value.hasPrevious)
   const hasNextPage = computed(() => pagination.value.hasNext)
+
+  // 페이지 번호 배열 (계산된 속성)
+  const pageNumbers = computed(() => 
+    generatePageNumbers(pagination.value.currentPage, pagination.value.totalPages)
+  )
 
   // 검색 활성 상태
   const isSearchActive = computed(() => searchForm.value.hasValue)
@@ -272,6 +278,7 @@ export const useMemberStore = defineStore('member', () => {
     hasNextPage,
     isSearchActive,
     modalTitle,
+    pageNumbers,
 
     // 액션
     setMemberListData,

@@ -2,6 +2,7 @@
 // 2025년 스타일: 최소한의 setup
 import Header from '@/components/common/Header.vue'
 import Footer from '@/components/common/Footer.vue'
+import Toast from '@/components/common/Toast.vue'
 </script>
 
 <template>
@@ -16,6 +17,9 @@ import Footer from '@/components/common/Footer.vue'
       </RouterView>
     </main>
     <Footer />
+    
+    <!-- 토스트 컴포넌트 -->
+    <Toast />
   </div>
 </template>
 

@@ -12,8 +12,6 @@ export interface ViewMember {
   gender: 'M' | 'F'
 
   // 계산된 필드들 (readonly)
-  readonly displayName: string
-  readonly formattedPhone: string
   readonly genderText: string
   readonly ageGroup: string
 }

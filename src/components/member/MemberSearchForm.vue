@@ -16,6 +16,10 @@ const onSearch = () => {
   })
 }
 
+const onAddMember = () => {
+  memberService.openCreateModal()
+}
+
 defineOptions({
   name: 'MemberSearchForm',
 })
@@ -31,7 +35,7 @@ defineOptions({
       class="w-full p-2 border border-slate-300 bg-white rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
     />
     <button type="button" class="btn btn-blue" @click="onSearch">검색</button>
-    <button type="button" class="btn btn-green">회원 추가</button>
+    <button type="button" class="btn btn-green" @click="onAddMember">회원 추가</button>
   </div>
 </template>
 
