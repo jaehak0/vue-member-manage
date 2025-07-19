@@ -2,58 +2,59 @@
 @import "pretendard/dist/web/variable/pretendardvariable.css";
 
 @theme{
-	 --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+	--font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 
-	  /* 커스텀 스페이싱 */
-  --spacing-18: 4.5rem;
-  --spacing-72: 18rem;
+	/* 커스텀 스페이싱 */
+	--spacing-18: 4.5rem;
+	--spacing-72: 18rem;
 
-  /* 커스텀 브레이크포인트 */
-  --breakpoint-xs: 475px;
-  --breakpoint-3xl: 1680px;
+	/* 커스텀 브레이크포인트 */
+	--breakpoint-xs: 475px;
+	--breakpoint-3xl: 1680px;
+	--breakpoint-*: initial;
 }
 
 /* 기본 스타일 */
 @layer base {
-  html {
-    font-family: var(--font-sans);
-    font-feature-settings: "tnum", "ss01", "ss02";
-  }
+	html {
+		font-family: var(--font-sans);
+		font-feature-settings: "tnum", "ss01", "ss02";
+	}
 
-  body {
-    @apply bg-white text-gray-900 antialiased;
-    /* Pretendard에 최적화된 렌더링 */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-  }
+	body {
+		@apply bg-white text-gray-900 antialiased;
+		/* Pretendard에 최적화된 렌더링 */
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
+	}
 
-  /* 한국어 타이포그래피 최적화 */
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
-    letter-spacing: -0.025em;
-  }
+	/* 한국어 타이포그래피 최적화 */
+	h1, h2, h3, h4, h5, h6 {
+		font-weight: 700;
+		letter-spacing: -0.025em;
+	}
 
-  p {
-    line-height: 1.7;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-  }
+	p {
+		line-height: 1.7;
+		word-break: keep-all;
+		overflow-wrap: break-word;
+	}
 }
 
 /* 커스텀 유틸리티 */
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+	.text-balance {
+		text-wrap: balance;
+	}
 
-  .scrollbar-none {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
+	.scrollbar-none {
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
 
-  .scrollbar-none::-webkit-scrollbar {
-    display: none;
-  }
+	.scrollbar-none::-webkit-scrollbar {
+		display: none;
+	}
 
 }
