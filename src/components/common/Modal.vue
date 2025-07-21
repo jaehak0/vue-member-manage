@@ -34,13 +34,6 @@ const handleKeydown = (e: KeyboardEvent) => {
     props.isOpen && emit('close')
   }
 }
-
-// 배경 클릭으로 모달 닫기
-const handleBackdropClick = (e: MouseEvent) => {
-  if (e.target === e.currentTarget) {
-    emit('close')
-  }
-}
 </script>
 
 <template>
@@ -50,10 +43,9 @@ const handleBackdropClick = (e: MouseEvent) => {
       v-if="isOpen"
       class="fixed inset-0 z-50 flex items-center justify-center"
       @keydown="handleKeydown"
-      @click="handleBackdropClick"
     >
       <!-- 배경 -->
-      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="emit('close')"></div>
       <!-- 모달 컨테이너 -->
       <div
         class="relative w-full mx-4 bg-white rounded-lg shadow-xl"
@@ -63,6 +55,7 @@ const handleBackdropClick = (e: MouseEvent) => {
             ? 'md:mx-4 md:max-h-[90vh] max-md:mx-0 max-md:h-full max-md:rounded-none max-md:max-w-none'
             : 'max-h-[90vh]',
         ]"
+        @click.stop
       >
         <!-- 모달 헤더 -->
         <div

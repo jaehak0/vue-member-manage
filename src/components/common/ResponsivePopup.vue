@@ -68,7 +68,9 @@ const handleClose = () => {
 
     <!-- 내용 -->
     <div class="flex-1 overflow-y-auto">
-      <slot name="mobile-content" />
+      <div class="max-w-md mx-auto">
+        <slot name="mobile-content" />
+      </div>
     </div>
 
     <!-- 하단 버튼 (옵션) -->

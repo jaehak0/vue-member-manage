@@ -57,7 +57,7 @@ const getIconColor = (type: ToastType) => {
 
 <template>
   <!-- 토스트 컨테이너 -->
-  <div class="fixed top-4 right-4 z-50 space-y-2">
+  <div class="fixed top-4 right-4 z-[100] space-y-2">
     <TransitionGroup name="toast" tag="div" class="space-y-2">
       <div
         v-for="toast in toastStore.toasts"

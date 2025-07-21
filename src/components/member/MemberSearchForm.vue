@@ -20,6 +20,13 @@ const onAddMember = () => {
   memberService.openCreateModal()
 }
 
+// Enter 키로 검색
+const handleKeyup = (e: KeyboardEvent) => {
+  if (e.key === 'Enter') {
+    onSearch()
+  }
+}
+
 defineOptions({
   name: 'MemberSearchForm',
 })
@@ -30,8 +37,8 @@ defineOptions({
     <input
       type="text"
       placeholder="이름, 이메일, 전화번호로 검색..."
-      :value="searchData"
-      @change="onChangeInput"
+      v-model="searchData"
+      @keyup.enter="onSearch"
       class="w-full p-2 border border-slate-300 bg-white rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
     />
     <button type="button" class="btn btn-blue" @click="onSearch">검색</button>

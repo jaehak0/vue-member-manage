@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useMemberStore } from '@/stores/memberStore.ts'
+
+const memberStore = useMemberStore()
+
 defineOptions({
   name: 'Header',
 })
@@ -10,7 +14,7 @@ defineOptions({
     <div
       class="absolute text-[1.25rem] font-medium left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
     >
-      OOO 회원관리 (총 : 00명)
+      회원관리 (총 : {{ memberStore.totalMemberCount }}명)
     </div>
   </header>
 </template>
