@@ -195,7 +195,24 @@ pnpm dev
 
 # 빌드
 pnpm build
+```
 
+### 환경 설정
+
+프로젝트 실행 전 `.env` 파일을 설정해야 합니다:
+
+1. 프로젝트 루트에 있는 `.env.example` 파일을 복사하여 `.env` 파일을 생성합니다.
+```bash
+cp .env.example .env
+```
+
+2. `.env` 파일을 열고 필요한 환경 변수를 설정합니다:
+```
+# 백엔드 URL 설정
+VITE_BACKEND_URL=http://your-backend-url
+
+# 요청 데이터 형식 설정 (snake_case 또는 camelCase)
+VITE_BACKEND_REQUEST_CASE_FORMAT=snake_case
 ```
 
 ## 📸 주요 화면
