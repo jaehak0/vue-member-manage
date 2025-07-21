@@ -14,8 +14,6 @@ const props = withDefaults(defineProps<Props>(), {
   showFooter: true,
 })
 
-const { isOpen, title, modalSize, showFooter } = props
-
 const emit = defineEmits<{
   close: []
 }>()
@@ -45,13 +43,13 @@ const handleClose = () => {
 
 <template>
   <!-- 모바일: 전체 화면 -->
-  <div v-if="isMobile && isOpen" class="fixed inset-0 z-50 bg-white flex flex-col">
+  <div v-if="isMobile && props.isOpen" class="fixed inset-0 z-50 bg-white flex flex-col">
     <!-- 헤더 -->
     <div>
       <div
         class="flex items-center justify-between py-4 border-b border-gray-200 bg-white max-w-md mx-auto"
       >
-        <h1 class="text-lg font-semibold text-gray-900">{{ title }}</h1>
+        <h1 class="text-lg font-semibold text-gray-900">{{ props.title }}</h1>
         <button
           @click="handleClose"
           class="p-2 text-gray-400 hover:text-gray-600 transition-colors"
@@ -76,7 +74,7 @@ const handleClose = () => {
     </div>
 
     <!-- 하단 버튼 (옵션) -->
-    <div v-if="showFooter" class="bg-white">
+    <div v-if="props.showFooter" class="bg-white">
       <div class="max-w-md mx-auto py-4 border-t border-gray-200">
         <slot name="mobile-footer" />
       </div>
@@ -84,12 +82,12 @@ const handleClose = () => {
   </div>
 
   <!-- 데스크톱: 모달 -->
-  <Modal v-else :is-open="isOpen" :title="title" :size="modalSize" @close="handleClose">
+  <Modal v-else :is-open="props.isOpen" :title="props.title" :size="props.modalSize" @close="handleClose">
     <!-- 모달 내용 -->
     <slot name="desktop-content" />
 
     <!-- 모달 푸터 -->
-    <template v-if="showFooter" #footer>
+    <template v-if="props.showFooter" #footer>
       <slot name="desktop-footer" />
     </template>
   </Modal>
