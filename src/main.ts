@@ -3,6 +3,7 @@ import '@/index.css'
 import App from '@/App.vue'
 import router from '@/router'
 import { createPinia } from 'pinia'
+import { error, log } from '@/util/devLogger.ts'
 
 // Vite 7.0 ESM-only 환경 활용
 const app = createApp(App)
@@ -18,13 +19,11 @@ router
     app.mount('#app')
 
     // Vite 7.0 개발 모드에서 추가 정보
-    if (import.meta.env.DEV) {
-      console.log('🚀 App mounted with Vite 7.0 + Pinia 3.0!')
-      console.log('Router ready, initial route:', router.currentRoute.value.path)
-    }
+    log('🚀 App mounted with Vite 7.0 + Pinia 3.0!')
+    log('Router ready, initial route:', router.currentRoute.value.path)
   })
-  .catch(error => {
-    console.error('라우터 초기화 실패:', error)
+  .catch(err => {
+    error('라우터 초기화 실패:', err)
   })
 
 // Vite 7.0 HMR 개선사항 활용

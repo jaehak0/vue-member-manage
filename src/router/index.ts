@@ -5,27 +5,18 @@ import {
   type NavigationGuardNext,
   type RouteLocationNormalized,
 } from 'vue-router'
+import { error, log } from '@/util/devLogger.ts'
 
 // Vite 7.0 ESM-only 환경에 최적화된 동적 import
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/HomeView.vue'),
+    component: () => import('@/views/MemberView.vue'),
     meta: {
-      title: '홈',
+      title: '회원관리',
       requiresAuth: false,
       keepAlive: true,
-    },
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import('@/views/AboutView.vue'),
-    meta: {
-      title: '소개',
-      requiresAuth: false,
-      transition: 'slide-left',
     },
   },
   {
@@ -72,21 +63,19 @@ router.beforeEach(
     // 인증 체크 (필요시)
     if (to.meta?.requiresAuth) {
       // 인증 로직 구현
-      console.log('인증이 필요한 페이지입니다.')
+      log('인증이 필요한 페이지입니다.')
     }
 
     // Vite 7.0 HMR 개선사항과 함께 개발 모드 로깅
-    if (import.meta.env.DEV) {
-      console.log(`[Router] ${from.name as string} → ${to.name as string}`)
-    }
+    log(`[Router] ${from.name as string} → ${to.name as string}`)
 
     next()
   }
 )
 
 // Vite 7.0 에러 처리 향상
-router.onError(error => {
-  console.error('[Router Error]:', error)
+router.onError(err => {
+  error('[Router Error]:', err)
 })
 
 export default router

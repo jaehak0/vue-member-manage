@@ -1,1 +1,79 @@
 @import "tailwindcss";
+@import "pretendard/dist/web/variable/pretendardvariable.css";
+
+@theme{
+	--font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+
+	/* 커스텀 스페이싱 */
+	--spacing-18: 4.5rem;
+	--spacing-72: 18rem;
+
+	/* 커스텀 브레이크포인트 */
+	--breakpoint-xs: 475px;
+	--breakpoint-3xl: 1680px;
+	--breakpoint-*: initial;
+}
+
+/* 기본 스타일 */
+@layer base {
+	html {
+		font-family: var(--font-sans);
+		font-feature-settings: "tnum", "ss01", "ss02";
+	}
+
+	body {
+		@apply bg-white text-gray-900 antialiased;
+		/* Pretendard에 최적화된 렌더링 */
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
+	}
+
+	/* 한국어 타이포그래피 최적화 */
+	h1, h2, h3, h4, h5, h6 {
+		font-weight: 700;
+		letter-spacing: -0.025em;
+	}
+
+	p {
+		line-height: 1.7;
+		word-break: keep-all;
+		overflow-wrap: break-word;
+	}
+}
+
+/* 커스텀 유틸리티 */
+@layer utilities {
+	.text-balance {
+		text-wrap: balance;
+	}
+
+	.scrollbar-none {
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+
+	.scrollbar-none::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+.btn {
+	@apply rounded px-4 py-2 font-medium min-w-fit;
+}
+
+.btn-blue{
+	@apply bg-blue-600 text-white hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-800
+	disabled:bg-blue-400 disabled:cursor-not-allowed disabled:hover:bg-blue-400 disabled:focus:bg-blue-400 disabled:active:bg-blue-400;
+}
+
+.btn-red{
+	@apply bg-red-600 text-white hover:bg-red-700 focus:bg-red-700 active:bg-red-800
+	disabled:bg-red-400 disabled:cursor-not-allowed disabled:hover:bg-red-400 disabled:focus:bg-red-400 disabled:active:bg-red-400;
+}
+
+.btn-green{
+	@apply bg-green-600 text-white hover:bg-green-700 focus:bg-green-700 active:bg-green-800
+	disabled:bg-green-400 disabled:cursor-not-allowed disabled:hover:bg-green-400 disabled:focus:bg-green-400 disabled:active:bg-green-400;
+}
+
