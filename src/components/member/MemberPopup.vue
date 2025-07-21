@@ -5,6 +5,7 @@ import { useMemberService } from '@/service/memberService'
 import { validateMemberForm } from '@/util/memberUtils'
 import ResponsivePopup from '@/components/common/ResponsivePopup.vue'
 import type { ViewMemberForm } from '@/types/memberViewTypes'
+import { error } from '@/util/devLogger.ts'
 
 const memberStore = useMemberStore()
 const memberService = useMemberService()
@@ -26,14 +27,13 @@ const formData = ref<ViewMemberForm>({
 
 // 모달 상태
 const isCreateMode = computed(() => memberStore.modalState.type === 'create')
-const modalTitle = computed(() =>
-  isCreateMode.value ? '새 회원 등록' : '회원 정보 수정'
-)
+const modalTitle = computed(() => (isCreateMode.value ? '새 회원 등록' : '회원 정보 수정'))
 
 // 팝업 열림 상태
-const isOpen = computed(() => 
-  memberStore.modalState.isOpen && 
-  (memberStore.modalState.type === 'create' || memberStore.modalState.type === 'edit')
+const isOpen = computed(
+  () =>
+    memberStore.modalState.isOpen &&
+    (memberStore.modalState.type === 'create' || memberStore.modalState.type === 'edit')
 )
 
 // 폼 유효성 검사
@@ -150,8 +150,8 @@ const handleSave = async () => {
         await memberService.editMember(targetId, formData.value)
       }
     }
-  } catch (error) {
-    console.error('저장 실패:', error)
+  } catch (err) {
+    error('저장 실패:', err)
   }
 }
 
@@ -162,12 +162,7 @@ const handleCancel = () => {
 </script>
 
 <template>
-  <ResponsivePopup
-    :is-open="isOpen"
-    :title="modalTitle"
-    modal-size="md"
-    @close="handleCancel"
-  >
+  <ResponsivePopup :is-open="isOpen" :title="modalTitle" modal-size="md" @close="handleCancel">
     <!-- 모바일 내용 -->
     <template #mobile-content>
       <div class="p-4">

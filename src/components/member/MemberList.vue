@@ -32,12 +32,14 @@ const handleRowClick = (member: ViewMember) => {
         <div class="col-phone px-4 py-3">전화번호</div>
         <!-- 성별 -->
         <div class="col-gender px-4 py-3">성별</div>
+        <!--나이-->
+        <div class="col-age px-4 py-3">나이</div>
       </div>
 
       <!-- Grid 바디 -->
       <div class="grid-body bg-white">
         <div
-          v-for="(member, index) in memberStore.members"
+          v-for="(member, _) in memberStore.members"
           :key="member.id"
           class="grid-row hover:bg-blue-50 cursor-pointer transition-colors duration-200 border-b border-gray-100"
           :class="{
@@ -68,6 +70,11 @@ const handleRowClick = (member: ViewMember) => {
           <!-- 성별 -->
           <div class="col-gender px-4 py-3 text-gray-900">
             {{ member.genderText }}
+          </div>
+
+          <!--나이-->
+          <div class="col-age px-4 py-3 text-gray-900">
+            {{ member.age }}
           </div>
         </div>
       </div>
@@ -114,8 +121,8 @@ const handleRowClick = (member: ViewMember) => {
 
   .grid-header,
   .grid-row {
-    grid-template-columns: 80px 120px 1fr 140px 80px;
-    grid-template-areas: 'number name email phone gender';
+    grid-template-columns: 80px 120px 1fr 140px 80px 60px;
+    grid-template-areas: 'number name email phone gender age';
   }
 
   .col-number {
@@ -133,6 +140,9 @@ const handleRowClick = (member: ViewMember) => {
   .col-gender {
     grid-area: gender;
   }
+  .col-age {
+    grid-area: age;
+  }
 }
 
 /* 모바일 (768px 이하) - 2컬럼 그리드 (이름, 전화번호만) */
@@ -149,7 +159,8 @@ const handleRowClick = (member: ViewMember) => {
 
   .col-number,
   .col-email,
-  .col-gender {
+  .col-gender,
+  .col-age {
     display: none;
   }
 
@@ -161,9 +172,6 @@ const handleRowClick = (member: ViewMember) => {
   }
 
   /* 모바일에서 텍스트 크기와 패딩 조정 */
-  .grid-container {
-    font-size: 0.75rem; /* text-xs */
-  }
 
   .grid-header > div,
   .grid-row > div {

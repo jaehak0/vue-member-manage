@@ -8,7 +8,7 @@ import Toast from '@/components/common/Toast.vue'
 <template>
   <div class="container mx-auto max-w-[1280px] flex flex-col min-h-screen">
     <Header />
-    <main>
+    <main class="flex flex-1">
       <!-- 2025년 방식: 향상된 라우터 뷰 -->
       <RouterView v-slot="{ Component, route }">
         <Transition :name="route.meta?.transition || 'fade'" mode="out-in">
@@ -17,7 +17,7 @@ import Toast from '@/components/common/Toast.vue'
       </RouterView>
     </main>
     <Footer />
-    
+
     <!-- 토스트 컴포넌트 -->
     <Toast />
   </div>

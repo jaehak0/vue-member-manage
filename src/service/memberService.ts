@@ -314,6 +314,31 @@ export const useMemberService = () => {
     }
   }
 
+  /**
+   * 첫 페이지로 이동
+   */
+  const goToFirstPage = async () => {
+    if (memberStore.pagination.currentPage !== 1) {
+      log('⏮️ 첫 페이지로 이동', `${memberStore.pagination.currentPage} → 1`)
+      await goToPage(1)
+    } else {
+      warn('⚠️ 이미 첫 페이지', '첫 번째 페이지입니다')
+    }
+  }
+
+  /**
+   * 마지막 페이지로 이동
+   */
+  const goToLastPage = async () => {
+    const lastPage = memberStore.pagination.totalPages
+    if (memberStore.pagination.currentPage !== lastPage) {
+      log('⏭️ 마지막 페이지로 이동', `${memberStore.pagination.currentPage} → ${lastPage}`)
+      await goToPage(lastPage)
+    } else {
+      warn('⚠️ 이미 마지막 페이지', '마지막 페이지입니다')
+    }
+  }
+
   // ============= 모달 관리 =============
 
   /**
@@ -409,13 +434,15 @@ export const useMemberService = () => {
     goToPage,
     goToNextPage,
     goToPreviousPage,
+    goToFirstPage,
+    goToLastPage,
 
     // 모달 관리
     openCreateModal,
     openEditModal,
     openDetailModal,
     openDeleteModal,
-    closeModal: closeModal,
+    closeModal,
 
     // 초기화
     initialize,

@@ -26,6 +26,16 @@ const handleGoToNext = () => {
   memberService.goToNextPage()
 }
 
+// 첫 페이지
+const handleGoToFirst = () => {
+  memberService.goToFirstPage()
+}
+
+// 마지막 페이지
+const handleGoToLast = () => {
+  memberService.goToLastPage()
+}
+
 log('MemberPagination', memberStore.pagination)
 </script>
 
@@ -42,5 +52,7 @@ log('MemberPagination', memberStore.pagination)
     @go-to-page="handleGoToPage"
     @go-to-previous="handleGoToPrevious"
     @go-to-next="handleGoToNext"
+    @go-to-first="handleGoToFirst"
+    @go-to-last="handleGoToLast"
   />
 </template>

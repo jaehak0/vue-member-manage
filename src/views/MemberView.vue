@@ -15,7 +15,7 @@ defineOptions({
 </script>
 
 <template>
-  <div v-if="isInitialized" class="flex">
+  <div v-if="isInitialized" class="flex flex-1">
     <div class="flex flex-col flex-1">
       <MemberSearchForm />
       <MemberList />

@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useMemberStore } from '@/stores/memberStore'
 import { useMemberService } from '@/service/memberService'
 import ResponsivePopup from '@/components/common/ResponsivePopup.vue'
+import { error } from '@/util/devLogger.ts'
 
 const memberStore = useMemberStore()
 const memberService = useMemberService()
@@ -25,8 +26,8 @@ const handleDelete = async () => {
   if (targetId) {
     try {
       await memberService.removeMember(targetId)
-    } catch (error) {
-      console.error('삭제 실패:', error)
+    } catch (err) {
+      error('삭제 실패:', err)
     }
   }
 }

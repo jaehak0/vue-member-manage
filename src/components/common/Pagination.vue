@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { log } from '@/util/devLogger.ts'
+import { useDebounce } from '@/composables/useDebounce'
+
 interface Props {
   currentPage: number
   totalPages: number
@@ -14,17 +17,49 @@ interface Emits {
   (e: 'goToPage', page: number): void
   (e: 'goToPrevious'): void
   (e: 'goToNext'): void
+  (e: 'goToFirst'): void
+  (e: 'goToLast'): void
 }
 
 const props = defineProps<Props>()
-defineEmits<Emits>()
+const emit = defineEmits<Emits>()
 
 defineOptions({
   name: 'Pagination',
 })
 
+// 디바운스 처리된 함수들
+const { debouncedFn: goToPage, isProcessing } = useDebounce((page: number) => {
+  emit('goToPage', page)
+}, 300)
+
+const { debouncedFn: goToPrevious } = useDebounce(() => {
+  if (props.hasPrevious) {
+    emit('goToPrevious')
+  }
+}, 300)
+
+const { debouncedFn: goToNext } = useDebounce(() => {
+  if (props.hasNext) {
+    emit('goToNext')
+  }
+}, 300)
+
+// 첫 페이지와 마지막 페이지 이동 함수 추가
+const { debouncedFn: goToFirst } = useDebounce(() => {
+  if (props.currentPage !== 1) {
+    emit('goToFirst')
+  }
+}, 300)
+
+const { debouncedFn: goToLast } = useDebounce(() => {
+  if (props.currentPage !== props.totalPages) {
+    emit('goToLast')
+  }
+}, 300)
+
 // 디버깅용 로그
-console.log('Pagination props:', {
+log('Pagination props:', {
   currentPage: props.currentPage,
   totalPages: props.totalPages,
   totalCount: props.totalCount,
@@ -42,10 +77,19 @@ console.log('Pagination props:', {
 
     <!-- 페이지네이션 -->
     <div class="flex items-center justify-center gap-1">
+      <!-- 첫 페이지 버튼 -->
+      <button
+        @click="goToFirst"
+        :disabled="currentPage === 1 || isProcessing"
+        class="flex items-center justify-center w-10 h-10 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+      >
+        «
+      </button>
+
       <!-- 이전 페이지 버튼 -->
       <button
-        @click="$emit('goToPrevious')"
-        :disabled="!hasPrevious"
+        @click="goToPrevious"
+        :disabled="!hasPrevious || isProcessing"
         class="flex items-center justify-center w-10 h-10 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
       >
         ‹
@@ -55,7 +99,8 @@ console.log('Pagination props:', {
       <button
         v-for="pageNum in pageNumbers"
         :key="pageNum"
-        @click="$emit('goToPage', pageNum)"
+        @click="goToPage(pageNum)"
+        :disabled="isProcessing"
         :class="[
           'flex items-center justify-center w-10 h-10 text-sm border border-gray-300 rounded transition-colors',
           pageNum === currentPage
@@ -68,11 +113,20 @@ console.log('Pagination props:', {
 
       <!-- 다음 페이지 버튼 -->
       <button
-        @click="$emit('goToNext')"
-        :disabled="!hasNext"
+        @click="goToNext"
+        :disabled="!hasNext || isProcessing"
         class="flex items-center justify-center w-10 h-10 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
       >
         ›
+      </button>
+
+      <!-- 마지막 페이지 버튼 -->
+      <button
+        @click="goToLast"
+        :disabled="currentPage === totalPages || isProcessing"
+        class="flex items-center justify-center w-10 h-10 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+      >
+        »
       </button>
     </div>
   </div>

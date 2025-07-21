@@ -74,6 +74,11 @@ defineOptions({
           <div class="detail-label">성별:</div>
           <div class="detail-value">{{ memberStore.currentMember?.genderText }}</div>
         </div>
+        <!-- 나이 -->
+        <div class="detail-item">
+          <div class="detail-label">나이:</div>
+          <div class="detail-value">{{ memberStore.currentMember?.age }}세</div>
+        </div>
 
         <div class="mt-5 p-5 border border-t-1 border-slate-100 flex gap-2">
           <button type="button" class="btn btn-blue flex-1" @click="openEditModal">수정</button>
@@ -127,6 +132,11 @@ defineOptions({
           <div class="mobile-detail-item">
             <div class="mobile-detail-label">성별</div>
             <div class="mobile-detail-value">{{ memberStore.currentMember?.genderText }}</div>
+          </div>
+          <!-- 나이 -->
+          <div class="mobile-detail-item">
+            <div class="mobile-detail-label">나이</div>
+            <div class="mobile-detail-value">{{ memberStore.currentMember?.age }}세</div>
           </div>
         </div>
 
