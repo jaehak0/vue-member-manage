@@ -168,16 +168,16 @@ vue-member-manage/
 │   ├── App.vue             # 루트 컴포넌트
 │   ├── main.ts             # 애플리케이션 진입점
 │   └── vite-env.d.ts       # Vite 환경 타입 정의
-├── .eslintrc.cjs           # ESLint 설정
+├── .eslintrc.config.cjs           # ESLint 설정
 ├── .gitignore              # Git 무시 파일 목록
 ├── .prettierrc             # Prettier 설정
 ├── index.html              # HTML 진입점
 ├── package.json            # 패키지 정보 및 의존성
 ├── pnpm-lock.yaml          # 패키지 잠금 파일
-├── postcss.config.js       # PostCSS 설정
 ├── README.md               # 프로젝트 문서
 ├── tailwind.config.js      # TailwindCSS 설정
-├── tsconfig.json           # TypeScript 설정
+├── tsconfig.json           # TypeScript 기본 설정
+├── tsconfig.app.json       # 애플리케이션용 TypeScript 설정
 ├── tsconfig.node.json      # Node.js용 TypeScript 설정
 └── vite.config.ts          # Vite 설정
 ```
@@ -196,8 +196,6 @@ pnpm dev
 # 빌드
 pnpm build
 
-# 린트 검사
-pnpm lint
 ```
 
 ### 코딩 컨벤션

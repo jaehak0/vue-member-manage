@@ -14,6 +14,8 @@ const props = withDefaults(defineProps<Props>(), {
   showFooter: true,
 })
 
+const { isOpen, title, modalSize, showFooter } = props
+
 const emit = defineEmits<{
   close: []
 }>()

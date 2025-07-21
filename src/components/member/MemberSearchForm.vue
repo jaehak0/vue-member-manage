@@ -5,10 +5,6 @@ import { ref } from 'vue'
 const memberService = useMemberService()
 const searchData = ref<string>('')
 
-const onChangeInput = (e: Event) => {
-  searchData.value = (e.target as HTMLInputElement).value
-}
-
 const onSearch = () => {
   memberService.searchMembers({
     searchType: 'all',
@@ -18,13 +14,6 @@ const onSearch = () => {
 
 const onAddMember = () => {
   memberService.openCreateModal()
-}
-
-// Enter 키로 검색
-const handleKeyup = (e: KeyboardEvent) => {
-  if (e.key === 'Enter') {
-    onSearch()
-  }
 }
 
 defineOptions({

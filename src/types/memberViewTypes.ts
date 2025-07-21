@@ -41,8 +41,8 @@ export interface ViewSearchForm {
   searchValue: string
 
   // 검색 상태
-  readonly isActive: boolean
-  readonly hasValue: boolean
+  readonly isActive?: boolean
+  readonly hasValue?: boolean
 }
 
 /**
