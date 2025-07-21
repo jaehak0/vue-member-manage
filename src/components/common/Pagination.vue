@@ -37,7 +37,7 @@ console.log('Pagination props:', {
     <!-- 페이지 정보 -->
     <div class="flex items-center justify-between mb-4 text-sm text-gray-700">
       <div>총 {{ totalCount }}명 중 {{ startItem }}-{{ endItem }}번째 회원</div>
-      <div>{{ currentPage }} / {{ totalPages }} 페이지</div>
+      <div class="page-info">{{ currentPage }} / {{ totalPages }} 페이지</div>
     </div>
 
     <!-- 페이지네이션 -->
@@ -90,6 +90,10 @@ console.log('Pagination props:', {
   .w-8.h-8 {
     width: 2rem;
     height: 2rem;
+  }
+
+  .page-info {
+    display: none;
   }
 }
 

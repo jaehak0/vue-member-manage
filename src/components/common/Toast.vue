@@ -7,7 +7,7 @@ const toastStore = useToastStore()
 // 토스트 타입별 스타일
 const getToastStyle = (type: ToastType) => {
   const baseStyle = 'flex items-center p-4 mb-3 text-sm rounded-lg shadow-lg'
-  
+
   switch (type) {
     case 'success':
       return `${baseStyle} text-green-800 bg-green-50 border border-green-200`
@@ -58,11 +58,7 @@ const getIconColor = (type: ToastType) => {
 <template>
   <!-- 토스트 컨테이너 -->
   <div class="fixed top-4 right-4 z-50 space-y-2">
-    <TransitionGroup
-      name="toast"
-      tag="div"
-      class="space-y-2"
-    >
+    <TransitionGroup name="toast" tag="div" class="space-y-2">
       <div
         v-for="toast in toastStore.toasts"
         :key="toast.id"
@@ -74,7 +70,6 @@ const getIconColor = (type: ToastType) => {
           <svg
             :class="getIconColor(toast.type)"
             class="w-5 h-5"
-            fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >

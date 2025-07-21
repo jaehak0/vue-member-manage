@@ -68,7 +68,7 @@ export const useMemberStore = defineStore('member', () => {
   const hasNextPage = computed(() => pagination.value.hasNext)
 
   // 페이지 번호 배열 (계산된 속성)
-  const pageNumbers = computed(() => 
+  const pageNumbers = computed(() =>
     generatePageNumbers(pagination.value.currentPage, pagination.value.totalPages)
   )
 
@@ -208,9 +208,24 @@ export const useMemberStore = defineStore('member', () => {
   }
 
   /**
-   * 모달 닫기
+   * 모달 닫기 (currentMember 유지)
    */
-  const closeModal = () => {
+  const resetModalState = () => {
+    modalState.value = {
+      isOpen: false,
+      type: 'create',
+      targetId: null,
+      title: '',
+      canSave: false,
+      canDelete: false,
+    }
+    // currentMember는 유지 (취소 시 기존 선택 유지)
+  }
+
+  /**
+   * 모달 닫기 (currentMember 초기화)
+   */
+  const resetModalStateWithMember = () => {
     modalState.value = {
       isOpen: false,
       type: 'create',
@@ -260,7 +275,7 @@ export const useMemberStore = defineStore('member', () => {
       pageNumbers: [],
     }
     resetSearch()
-    closeModal()
+    resetModalStateWithMember()
   }
 
   return {
@@ -290,7 +305,8 @@ export const useMemberStore = defineStore('member', () => {
     resetSearch,
     setCurrentPage,
     openModal,
-    closeModal,
+    resetModalState,
+    resetModalStateWithMember,
     resetStore,
   }
 })

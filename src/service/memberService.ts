@@ -20,7 +20,7 @@ import {
   viewFormToServerCreate,
   viewFormToServerUpdate,
   viewSearchToServerRequest,
-} from '@/util/serverToViewData'
+} from '@/util/memberDataTransforms.ts'
 
 // API 함수들
 import {
@@ -141,7 +141,7 @@ export const useMemberService = () => {
 
       // 전체 목록 새로고침 (새 회원은 서버에서 ID 받아야 하므로)
       await fetchMemberList()
-      memberStore.closeModal()
+      memberStore.resetModalStateWithMember()
 
       info('✅ 목록 새로고침 및 모달 닫기 완료')
     } catch (err) {
@@ -191,7 +191,7 @@ export const useMemberService = () => {
         `${updatedViewMember.name} (수정됨)`
       )
 
-      memberStore.closeModal()
+      memberStore.resetModalStateWithMember()
 
       info('✅ 회원 수정 성공 (로컬 상태 업데이트)', `${updatedViewMember.name} 님 정보 수정`)
     } catch (err) {
@@ -234,7 +234,7 @@ export const useMemberService = () => {
         `삭제 후: ${afterCount}명`
       )
 
-      memberStore.closeModal()
+      memberStore.resetModalStateWithMember()
 
       info(
         '✅ 회원 삭제 성공 (실시간 UI 반영)',
@@ -372,7 +372,7 @@ export const useMemberService = () => {
   const closeModal = () => {
     log('❌ 모달 닫기', `현재 모달: ${memberStore.modalState.type}`)
     const oldState = memberStore.modalState.type
-    memberStore.closeModal()
+    memberStore.resetModalState()
     stateLog('memberStore', 'closeModal', oldState, 'closed')
   }
 
@@ -415,7 +415,7 @@ export const useMemberService = () => {
     openEditModal,
     openDetailModal,
     openDeleteModal,
-    closeModal,
+    closeModal: closeModal,
 
     // 초기화
     initialize,

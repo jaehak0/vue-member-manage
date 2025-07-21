@@ -21,7 +21,7 @@ defineOptions({
 </script>
 
 <template>
-  <div class="bg-slate-50 w-[300px]">
+  <div v-if="!!memberStore.currentMember" class="bg-slate-50 w-[300px]">
     <header
       class="border-l-4 border-l-blue-500 border-b-2 border-b-slate-200 px-5 py-4 text-lg font-semibold"
     >
